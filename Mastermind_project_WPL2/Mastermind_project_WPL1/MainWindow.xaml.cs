@@ -155,7 +155,9 @@ namespace Mastermind_project_WPL1
             if (selectedColors.SequenceEqual(targetColors))
             {
                 stopCountdown();
-                askToPlayAgain($"Gefeliciteerd! Je hebt de code gekraakt in {attempts} pogingen.");
+                resetGame();
+                generateRandomColorCode();
+                // askToPlayAgain($"Gefeliciteerd! Je hebt de code gekraakt in {attempts} pogingen.");
                 return;
             }
 
@@ -298,7 +300,10 @@ namespace Mastermind_project_WPL1
         {
             if (attempts > 10)
             {
-                askToPlayAgain($"Je hebt verloren! De code was: {targetColorCode}");
+                // askToPlayAgain($"Je hebt verloren! De code was: {targetColorCode}");
+                MessageBox.Show($"Je hebt verloren! De code was: {targetColorCode}");
+                resetGame();
+                generateRandomColorCode();
                 return;
             }
             else
@@ -349,7 +354,10 @@ namespace Mastermind_project_WPL1
             // Controleer of het maximum aantal pogingen is bereikt
             if (attempts > 10)
             {
-                askToPlayAgain($"Je hebt verloren! De code was: {targetColorCode}");
+                // askToPlayAgain($"Je hebt verloren! De code was: {targetColorCode}");
+                MessageBox.Show($"Je hebt verloren! De code was: {targetColorCode}");
+                resetGame();
+                generateRandomColorCode();
                 return;
             }
             else
@@ -364,6 +372,9 @@ namespace Mastermind_project_WPL1
 
             updateWindowTitle();
         }
+
+        private void quitGameMenuItem_Click(object sender, RoutedEventArgs e) => this.Close();
+
 
         private void resetGame()
         {
@@ -402,7 +413,7 @@ namespace Mastermind_project_WPL1
             }
         }
 
-        private void askToPlayAgain(string message)
+        /* private void askToPlayAgain(string message)
         {
             MessageBoxResult result = MessageBox.Show(message + "\nWil je opnieuw spelen?", "Nog een spel?", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
@@ -414,7 +425,7 @@ namespace Mastermind_project_WPL1
             {
                 Application.Current.Shutdown();
             }
-        }
+        } */
 
         private string startGame()
         {
