@@ -24,6 +24,9 @@ namespace Mastermind_project_WPL1
         private DispatcherTimer timer;
         private int remainingTime = 10;
 
+        private string[] highscores = new string[15];
+        private int highscoreCount = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -262,7 +265,7 @@ namespace Mastermind_project_WPL1
             }
         }
 
-        private void calculateScore(string[] selectedColors, string[] targetColors)
+        private int calculateScore(string[] selectedColors, string[] targetColors)
         {
             int totalScore = 0;
 
@@ -292,6 +295,7 @@ namespace Mastermind_project_WPL1
 
             // Score weergeven in het label
             scoreLabel.Content = $"Score: {totalScore} strafpunten";
+            return totalScore;
         }
 
 
@@ -439,6 +443,50 @@ namespace Mastermind_project_WPL1
             return playerName;
         }
 
+        private void addHighscore(string playerName, int attempts, int score)
+        {
+            string newHighscore = $"{playerName} - {attempts} pogingen - {score}/100";
+
+            if (highscoreCount < 15)
+            {
+                highscores[highscoreCount] = newHighscore;
+                highscoreCount++;
+            }
+            else
+            {
+                // Vervang de slechtste score (laatste) met de nieuwe score als dat nodig is
+                highscores[14] = newHighscore;
+            }
+
+            // Sorteer de array op basis van pogingen en score (beste eerst)
+            Array.Sort(highscores, 0, highscoreCount, Comparer<string>.Create((x, y) =>
+            {
+                int attemptsX = int.Parse(x.Split('-')[1].Trim().Split(' ')[0]);
+                int attemptsY = int.Parse(y.Split('-')[1].Trim().Split(' ')[0]);
+
+                int scoreX = int.Parse(x.Split('-')[2].Trim().Split('/')[0]);
+                int scoreY = int.Parse(y.Split('-')[2].Trim().Split('/')[0]);
+
+                // Eerst sorteren op pogingen, daarna op score
+                if (attemptsX != attemptsY)
+                    return attemptsX.CompareTo(attemptsY);
+                return scoreY.CompareTo(scoreX);
+            }));
+        }
+
+        private void showHighscores()
+        {
+            StringBuilder sb = new StringBuilder("Highscores:\n\n");
+
+            for (int i = 0; i < highscoreCount; i++)
+            {
+                sb.AppendLine(highscores[i]);
+            }
+
+            MessageBox.Show(sb.ToString(), "Highscores", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+    private void highscoresMenuItem_Click(object sender, RoutedEventArgs e) => showHighscores();
 
     }
 }
