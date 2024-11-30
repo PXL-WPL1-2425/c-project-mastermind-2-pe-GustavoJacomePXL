@@ -28,6 +28,9 @@ namespace Mastermind_project_WPL1
         {
             InitializeComponent();
 
+            // Start het spel
+            startGame();
+
             // Initialiseer de timer
             timer = new DispatcherTimer
             {
@@ -411,6 +414,18 @@ namespace Mastermind_project_WPL1
             {
                 Application.Current.Shutdown();
             }
+        }
+
+        private string startGame()
+        {
+            string playerName = "";
+
+            while (playerName == "")
+            {
+                playerName = Microsoft.VisualBasic.Interaction.InputBox("Geef je naam in:", "Spelersnaam", "");
+            }
+
+            return playerName;
         }
 
 
